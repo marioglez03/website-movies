@@ -26,10 +26,13 @@ def index():
 # ── PELÍCULAS ──
 @app.route("/peliculas", methods=["GET", "POST"])
 def peliculas():
-    # Reiniciar sesión si venimos del botón "Elige otra película"
+    # Reiniciar solo las variables de elección si venimos del botón "Elige otra película"
     if request.args.get("reiniciar") == "1":
-        session.clear()
+        session["ronda"] = 1
+        session["elecciones"] = []
+        session["todas_relacionadas"] = []
 
+    # Inicializar sesión si aún no existe
     if "ronda" not in session:
         session["ronda"] = 1
         session["elecciones"] = []
@@ -50,10 +53,7 @@ def peliculas():
         todas = [p for p in todas if p not in session["elecciones"]]
         coincidencias = [p for p in set(todas) if todas.count(p) > 1]
 
-        if coincidencias:
-            recomendacion = random.choice(coincidencias)
-        else:
-            recomendacion = random.choice(todas) if todas else None
+        recomendacion = random.choice(coincidencias) if coincidencias else random.choice(todas) if todas else None
 
         return render_template(
             "resultado.html",
@@ -63,6 +63,7 @@ def peliculas():
             tipo="movie"
         )
 
+    # Mostrar dos opciones distintas
     disponibles = list(set(todas_peliculas) - set(session["elecciones"]))
     opciones = random.sample(disponibles, 2)
 
@@ -77,10 +78,13 @@ def peliculas():
 # ── SERIES ──
 @app.route("/series", methods=["GET", "POST"])
 def series():
-    # Reiniciar sesión si venimos del botón "Elige otra serie"
+    # Reiniciar solo las variables de elección si venimos del botón "Elige otra serie"
     if request.args.get("reiniciar") == "1":
-        session.clear()
+        session["ronda"] = 1
+        session["elecciones"] = []
+        session["todas_relacionadas"] = []
 
+    # Inicializar sesión si aún no existe
     if "ronda" not in session:
         session["ronda"] = 1
         session["elecciones"] = []
@@ -101,10 +105,7 @@ def series():
         todas = [p for p in todas if p not in session["elecciones"]]
         coincidencias = [p for p in set(todas) if todas.count(p) > 1]
 
-        if coincidencias:
-            recomendacion = random.choice(coincidencias)
-        else:
-            recomendacion = random.choice(todas) if todas else None
+        recomendacion = random.choice(coincidencias) if coincidencias else random.choice(todas) if todas else None
 
         return render_template(
             "resultado.html",
@@ -114,6 +115,7 @@ def series():
             tipo="tv"
         )
 
+    # Mostrar dos opciones distintas
     disponibles = list(set(todas_series) - set(session["elecciones"]))
     opciones = random.sample(disponibles, 2)
 
