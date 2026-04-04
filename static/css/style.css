@@ -1,0 +1,68 @@
+/* Fondo negro y texto blanco */
+body.fondo-negro {
+    background-color: black;
+    color: white;
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+/* Contenedor de los botones de la portada */
+.menu {
+    display: flex;
+    justify-content: center;
+    margin-top: 20%;
+    gap: 50px;
+}
+
+/* Botones rojos */
+.boton {
+    background-color: red;
+    color: white;
+    font-size: 30px;
+    padding: 20px 40px;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+/* Efecto hover */
+.boton:hover {
+    background-color: darkred;
+}
+
+/* Contenedor del poster */
+.poster-container {
+    margin: 20px auto;
+    display: flex;
+    justify-content: center;
+}
+
+/* Imagen del poster */
+.poster {
+    width: 300px;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(255, 0, 0, 0.3), 0 2px 8px rgba(0,0,0,0.8);
+    transition: transform 0.3s ease;
+}
+
+.poster:hover {
+    transform: scale(1.04);
+}
+
+/* Footer TMDB */
+.tmdb-footer {
+    margin-top: 30px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: #aaa;
+    font-size: 13px;
+    border-top: 1px solid #222;
+}
+
+.tmdb-logo {
+    height: 24px;
+    vertical-align: middle;
+}

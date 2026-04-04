@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Elige tu película</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="fondo-negro">
+    <h1>Ronda {{ ronda }}: Elige una película</h1>
+    <form method="POST">
+        <button type="submit" name="pelicula" value="{{ pelicula1 }}">{{ pelicula1 }}</button>
+        <button type="submit" name="pelicula" value="{{ pelicula2 }}">{{ pelicula2 }}</button>
+    </form>
+</body>
+</html>
