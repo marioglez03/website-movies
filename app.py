@@ -24,9 +24,12 @@ def index():
     return render_template("index.html")
 
 # ── PELÍCULAS ──
-
 @app.route("/peliculas", methods=["GET", "POST"])
 def peliculas():
+    # Reiniciar sesión si venimos del botón "Elige otra película"
+    if request.args.get("reiniciar") == "1":
+        session.clear()
+
     if "ronda" not in session:
         session["ronda"] = 1
         session["elecciones"] = []
@@ -41,6 +44,7 @@ def peliculas():
                 session["todas_relacionadas"].append(relacionadas)
             session["ronda"] += 1
 
+    # Fin de las 5 rondas: mostrar recomendación
     if session["ronda"] > 5:
         todas = [p for sublist in session["todas_relacionadas"] for p in sublist]
         todas = [p for p in todas if p not in session["elecciones"]]
@@ -71,9 +75,12 @@ def peliculas():
     )
 
 # ── SERIES ──
-
 @app.route("/series", methods=["GET", "POST"])
 def series():
+    # Reiniciar sesión si venimos del botón "Elige otra serie"
+    if request.args.get("reiniciar") == "1":
+        session.clear()
+
     if "ronda" not in session:
         session["ronda"] = 1
         session["elecciones"] = []
@@ -88,6 +95,7 @@ def series():
                 session["todas_relacionadas"].append(relacionadas)
             session["ronda"] += 1
 
+    # Fin de las 5 rondas: mostrar recomendación
     if session["ronda"] > 5:
         todas = [p for sublist in session["todas_relacionadas"] for p in sublist]
         todas = [p for p in todas if p not in session["elecciones"]]

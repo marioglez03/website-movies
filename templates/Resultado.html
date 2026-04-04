@@ -4,11 +4,63 @@
     <meta charset="UTF-8">
     <title>Resultado</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .retry-button {
+            margin-top: 25px;
+            padding: 12px 25px;
+            font-size: 1.2em;
+            font-weight: bold;
+            background-color: #1a1a1a; /* negro oscuro */
+            color: #e63946; /* rojo */
+            border: 2px solid #e63946;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .retry-button:hover {
+            background-color: #e63946;
+            color: #ffffff;
+            border: 2px solid #e63946;
+        }
+
+        h1 {
+            color: #ffffff;
+            text-align: center;
+            margin-top: 30px;
+            font-size: 2em;
+        }
+
+        .poster-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .poster {
+            max-width: 300px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.7);
+        }
+
+        .tmdb-footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #aaa;
+            font-size: 0.8em;
+        }
+
+        .tmdb-footer img {
+            height: 20px;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+    </style>
 </head>
 <body class="fondo-negro">
 
     {% if recomendacion %}
-        <h1>Has elegido: {{ recomendacion }}</h1>
+        <h1>Te recomendamos ver: {{ recomendacion }}</h1>
 
         <div class="poster-container">
             <img id="poster-img" src="" alt="Poster de {{ recomendacion }}" class="poster" style="display:none;">
@@ -17,7 +69,7 @@
 
         <!-- Botón para intentar de nuevo según tipo -->
         <form action="{% if tipo == 'movie' %}{{ url_for('peliculas') }}{% else %}{{ url_for('series') }}{% endif %}?reiniciar=1" method="get">
-            <button type="submit" class="retry-button">¿No he acertado? Déjame intentarlo de nuevo</button>
+            <button type="submit" class="retry-button">Elige otra película</button>
         </form>
 
         <footer class="tmdb-footer">
@@ -26,7 +78,7 @@
             <span>Este producto usa la API de TMDB, pero no está respaldado ni certificado por TMDB.</span>
         </footer>
     {% else %}
-        <h2>⚠️ No se encontraron coincidencias.</h2>
+        <h2 style="color:white; text-align:center;">⚠️ No se encontraron coincidencias.</h2>
         <form action="{% if tipo == 'movie' %}{{ url_for('peliculas') }}{% else %}{{ url_for('series') }}{% endif %}?reiniciar=1" method="get">
             <button type="submit" class="retry-button">Intentar de nuevo</button>
         </form>
