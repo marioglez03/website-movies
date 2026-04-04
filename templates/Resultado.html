@@ -6,24 +6,30 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body class="fondo-negro">
-    <h1>Has elegido:</h1>
-    <ul>
-        {% for peli in seleccionadas %}
-            <li>{{ peli }}</li>
-        {% endfor %}
-    </ul>
+
     {% if recomendacion %}
-        <h2>🎯 Te recomendamos ver: {{ recomendacion }}</h2>
+        <h1>Has elegido: {{ recomendacion }}</h1>
+
         <div class="poster-container">
             <img id="poster-img" src="" alt="Poster de {{ recomendacion }}" class="poster" style="display:none;">
             <p id="poster-error" style="display:none; color: #aaa;">No se encontró poster.</p>
         </div>
+
+        <!-- Botón para intentar de nuevo según tipo -->
+        <form action="{% if tipo == 'movie' %}{{ url_for('peliculas') }}{% else %}{{ url_for('series') }}{% endif %}?reiniciar=1" method="get">
+            <button type="submit" class="retry-button">¿No he acertado? Déjame intentarlo de nuevo</button>
+        </form>
+
         <footer class="tmdb-footer">
-            <img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg" alt="TMDB Logo" class="tmdb-logo">
+            <img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg" 
+                 alt="TMDB Logo" class="tmdb-logo">
             <span>Este producto usa la API de TMDB, pero no está respaldado ni certificado por TMDB.</span>
         </footer>
     {% else %}
         <h2>⚠️ No se encontraron coincidencias.</h2>
+        <form action="{% if tipo == 'movie' %}{{ url_for('peliculas') }}{% else %}{{ url_for('series') }}{% endif %}?reiniciar=1" method="get">
+            <button type="submit" class="retry-button">Intentar de nuevo</button>
+        </form>
     {% endif %}
 
     <script>
@@ -52,5 +58,6 @@
                 });
         }
     </script>
+
 </body>
 </html>
