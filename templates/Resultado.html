@@ -12,15 +12,14 @@
             <li>{{ peli }}</li>
         {% endfor %}
     </ul>
-
     {% if recomendacion %}
         <h2>🎯 Te recomendamos ver: {{ recomendacion }}</h2>
         <div class="poster-container">
             <img id="poster-img" src="" alt="Poster de {{ recomendacion }}" class="poster" style="display:none;">
-            <p id="poster-error" style="display:none; color: #aaa;">No se encontró poster para esta película.</p>
+            <p id="poster-error" style="display:none; color: #aaa;">No se encontró poster.</p>
         </div>
         <footer class="tmdb-footer">
-            <img src="{{ url_for('static', filename='img/tmdb-logo.svg') }}" alt="TMDB Logo" class="tmdb-logo">
+            <img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg" alt="TMDB Logo" class="tmdb-logo">
             <span>Este producto usa la API de TMDB, pero no está respaldado ni certificado por TMDB.</span>
         </footer>
     {% else %}
@@ -29,16 +28,20 @@
 
     <script>
         const TMDB_API_KEY = "{{ tmdb_key }}";
-        const movieTitle = {{ recomendacion | tojson }};
+        const titulo = {{ recomendacion | tojson }};
+        const tipo = "{{ tipo }}";
 
-        if (movieTitle) {
-            fetch(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(movieTitle)}&language=es-ES`)
+        if (titulo) {
+            const endpoint = tipo === "tv"
+                ? `https://api.themoviedb.org/3/search/tv?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(titulo)}&language=es-ES`
+                : `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(titulo)}&language=es-ES`;
+
+            fetch(endpoint)
                 .then(res => res.json())
                 .then(data => {
                     if (data.results && data.results.length > 0 && data.results[0].poster_path) {
-                        const posterUrl = `https://image.tmdb.org/t/p/w500${data.results[0].poster_path}`;
                         const img = document.getElementById("poster-img");
-                        img.src = posterUrl;
+                        img.src = `https://image.tmdb.org/t/p/w500${data.results[0].poster_path}`;
                         img.style.display = "block";
                     } else {
                         document.getElementById("poster-error").style.display = "block";
