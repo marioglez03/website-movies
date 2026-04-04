@@ -5,30 +5,43 @@
     <title>Resultado</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <style>
+        /* Botón "retry" adaptado a tu CSS */
         .retry-button {
             margin-top: 25px;
-            padding: 12px 25px;
+            padding: 14px 28px;
             font-size: 1.2em;
-            font-weight: bold;
-            background-color: #1a1a1a; /* negro oscuro */
-            color: #e63946; /* rojo */
-            border: 2px solid #e63946;
+            font-weight: 700;
+            background-color: #1a1a1a;
+            color: #e50914;
+            border: 2px solid #e50914;
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s ease;
+            letter-spacing: 1px;
         }
 
         .retry-button:hover {
-            background-color: #e63946;
+            background-color: #e50914;
             color: #ffffff;
-            border: 2px solid #e63946;
+            box-shadow:
+                0 0 20px rgba(229,9,20,0.8),
+                0 0 40px rgba(229,9,20,0.6),
+                0 0 80px rgba(229,9,20,0.4);
         }
 
         h1 {
-            color: #ffffff;
+            font-family: 'Bebas Neue', 'Montserrat', sans-serif;
+            color: #fff;
             text-align: center;
             margin-top: 30px;
-            font-size: 2em;
+            font-size: 2.4rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow:
+                0 0 8px rgba(229, 9, 20, 0.9),
+                0 0 24px rgba(229, 9, 20, 0.6),
+                0 0 60px rgba(229, 9, 20, 0.3);
+            animation: pulso-titulo 3s ease-in-out infinite alternate;
         }
 
         .poster-container {
@@ -38,22 +51,49 @@
         }
 
         .poster {
-            max-width: 300px;
-            border-radius: 12px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.7);
+            width: min(280px, 80vw);
+            border-radius: 10px;
+            box-shadow:
+                0 0 20px rgba(229, 9, 20, 0.8),
+                0 0 60px rgba(229, 9, 20, 0.4),
+                0 0 120px rgba(229, 9, 20, 0.2),
+                0 8px 40px rgba(0,0,0,0.9);
+            transition: transform 0.3s;
+            animation: pulso-poster 2.8s ease-in-out infinite alternate;
+        }
+
+        .poster:hover {
+            transform: scale(1.04);
+        }
+
+        @keyframes pulso-titulo {
+            from { text-shadow: 0 0 8px rgba(229,9,20,0.9), 0 0 24px rgba(229,9,20,0.5); }
+            to   { text-shadow: 0 0 14px rgba(229,9,20,1),  0 0 40px rgba(229,9,20,0.8), 0 0 80px rgba(229,9,20,0.4); }
+        }
+
+        @keyframes pulso-poster {
+            from { box-shadow: 0 0 18px rgba(229,9,20,0.7), 0 0 50px rgba(229,9,20,0.35); }
+            to   { box-shadow: 0 0 30px rgba(229,9,20,1),   0 0 80px rgba(229,9,20,0.6), 0 0 140px rgba(229,9,20,0.3); }
         }
 
         .tmdb-footer {
-            text-align: center;
             margin-top: 40px;
-            color: #aaa;
-            font-size: 0.8em;
+            padding: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            color: #666;
+            font-size: 12px;
+            border-top: 1px solid #1a1a1a;
+            text-align: center;
         }
 
-        .tmdb-footer img {
-            height: 20px;
+        .tmdb-logo {
+            height: 22px;
             vertical-align: middle;
-            margin-right: 5px;
+            opacity: 0.7;
         }
     </style>
 </head>
@@ -67,22 +107,24 @@
             <p id="poster-error" style="display:none; color: #aaa;">No se encontró poster.</p>
         </div>
 
-        <!-- Botón para intentar de nuevo según tipo -->
-        <form action="{% if tipo == 'movie' %}{{ url_for('peliculas') }}{% else %}{{ url_for('series') }}{% endif %}?reiniciar=1" method="get">
-            <button type="submit" class="retry-button">Elige otra película</button>
+        <form action="{% if tipo == 'movie' %}{{ url_for('peliculas') }}{% else %}{{ url_for('series') }}{% endif %}" method="get">
+            <input type="hidden" name="reiniciar" value="1">
+            <button type="submit" class="retry-button">{% if tipo == 'movie' %}Elige otra película{% else %}Elige otra serie{% endif %}</button>
         </form>
 
-        <footer class="tmdb-footer">
-            <img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg" 
-                 alt="TMDB Logo" class="tmdb-logo">
-            <span>Este producto usa la API de TMDB, pero no está respaldado ni certificado por TMDB.</span>
-        </footer>
     {% else %}
-        <h2 style="color:white; text-align:center;">⚠️ No se encontraron coincidencias.</h2>
-        <form action="{% if tipo == 'movie' %}{{ url_for('peliculas') }}{% else %}{{ url_for('series') }}{% endif %}?reiniciar=1" method="get">
+        <h2>⚠️ No se encontraron coincidencias.</h2>
+        <form action="{% if tipo == 'movie' %}{{ url_for('peliculas') }}{% else %}{{ url_for('series') }}{% endif %}" method="get">
+            <input type="hidden" name="reiniciar" value="1">
             <button type="submit" class="retry-button">Intentar de nuevo</button>
         </form>
     {% endif %}
+
+    <footer class="tmdb-footer">
+        <img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg" 
+             alt="TMDB Logo" class="tmdb-logo">
+        <span>Este producto usa la API de TMDB, pero no está respaldado ni certificado por TMDB.</span>
+    </footer>
 
     <script>
         const TMDB_API_KEY = "{{ tmdb_key }}";
