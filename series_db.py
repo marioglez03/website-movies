@@ -3,7 +3,10 @@ series_db = {}
 def add_series(nombre, relacionadas):
     if nombre not in series_db:
         series_db[nombre] = []
-    series_db[nombre] = list(set(series_db[nombre] + relacionadas))
+    expandidas = []
+    for item in relacionadas:
+        expandidas += [s.strip() for s in item.split(";")]
+    series_db[nombre] = list(set(series_db[nombre] + expandidas))
 
 
 add_series("Serie", ['Series Relacionadas'])
