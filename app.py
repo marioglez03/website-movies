@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, redirect, url_for
 import random
 import os
 from movies_db import peliculas_db
@@ -18,6 +18,7 @@ def obtener_relacionadas_pelicula(pelicula):
 def obtener_relacionadas_serie(serie):
     return series_db.get(serie, [])
 
+# ── INDEX ──
 @app.route("/")
 def index():
     session.clear()
@@ -26,18 +27,18 @@ def index():
 # ── PELÍCULAS ──
 @app.route("/peliculas", methods=["GET", "POST"])
 def peliculas():
-    # Reiniciar solo las variables de elección si venimos del botón "Elige otra película"
-    if request.args.get("reiniciar") == "1":
-        session["ronda"] = 1
-        session["elecciones"] = []
-        session["todas_relacionadas"] = []
+    # Reiniciar sesión si venimos de "Elige otra película"
+    if request.method == "GET" and request.args.get("reiniciar") == "1":
+        session.clear()
+        return redirect(url_for("peliculas"))
 
-    # Inicializar sesión si aún no existe
+    # Inicializar variables de sesión
     if "ronda" not in session:
         session["ronda"] = 1
         session["elecciones"] = []
         session["todas_relacionadas"] = []
 
+    # Registrar elección de usuario
     if request.method == "POST":
         eleccion = request.form.get("pelicula")
         if eleccion:
@@ -78,18 +79,18 @@ def peliculas():
 # ── SERIES ──
 @app.route("/series", methods=["GET", "POST"])
 def series():
-    # Reiniciar solo las variables de elección si venimos del botón "Elige otra serie"
-    if request.args.get("reiniciar") == "1":
-        session["ronda"] = 1
-        session["elecciones"] = []
-        session["todas_relacionadas"] = []
+    # Reiniciar sesión si venimos de "Elige otra serie"
+    if request.method == "GET" and request.args.get("reiniciar") == "1":
+        session.clear()
+        return redirect(url_for("series"))
 
-    # Inicializar sesión si aún no existe
+    # Inicializar variables de sesión
     if "ronda" not in session:
         session["ronda"] = 1
         session["elecciones"] = []
         session["todas_relacionadas"] = []
 
+    # Registrar elección de usuario
     if request.method == "POST":
         eleccion = request.form.get("pelicula")
         if eleccion:
