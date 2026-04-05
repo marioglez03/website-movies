@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Resultado</title>
+    <title>Result</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <style>
-        /* Botón "retry" adaptado a tu CSS */
+        /* Retry button adapted to your CSS */
         .retry-button {
             margin-top: 25px;
             padding: 14px 28px;
@@ -41,7 +41,7 @@
                 0 0 8px rgba(229, 9, 20, 0.9),
                 0 0 24px rgba(229, 9, 20, 0.6),
                 0 0 60px rgba(229, 9, 20, 0.3);
-            animation: pulso-titulo 3s ease-in-out infinite alternate;
+            animation: pulse-title 3s ease-in-out infinite alternate;
         }
 
         .poster-container {
@@ -59,19 +59,19 @@
                 0 0 120px rgba(229, 9, 20, 0.2),
                 0 8px 40px rgba(0,0,0,0.9);
             transition: transform 0.3s;
-            animation: pulso-poster 2.8s ease-in-out infinite alternate;
+            animation: pulse-poster 2.8s ease-in-out infinite alternate;
         }
 
         .poster:hover {
             transform: scale(1.04);
         }
 
-        @keyframes pulso-titulo {
+        @keyframes pulse-title {
             from { text-shadow: 0 0 8px rgba(229,9,20,0.9), 0 0 24px rgba(229,9,20,0.5); }
             to   { text-shadow: 0 0 14px rgba(229,9,20,1),  0 0 40px rgba(229,9,20,0.8), 0 0 80px rgba(229,9,20,0.4); }
         }
 
-        @keyframes pulso-poster {
+        @keyframes pulse-poster {
             from { box-shadow: 0 0 18px rgba(229,9,20,0.7), 0 0 50px rgba(229,9,20,0.35); }
             to   { box-shadow: 0 0 30px rgba(229,9,20,1),   0 0 80px rgba(229,9,20,0.6), 0 0 140px rgba(229,9,20,0.3); }
         }
@@ -100,41 +100,41 @@
 <body class="fondo-negro">
 
     {% if recomendacion %}
-        <h1>Te recomendamos ver: {{ recomendacion }}</h1>
+        <h1>We recommend watching: {{ recomendacion }}</h1>
 
         <div class="poster-container">
-            <img id="poster-img" src="" alt="Poster de {{ recomendacion }}" class="poster" style="display:none;">
-            <p id="poster-error" style="display:none; color: #aaa;">No se encontró poster.</p>
+            <img id="poster-img" src="" alt="Poster of {{ recomendacion }}" class="poster" style="display:none;">
+            <p id="poster-error" style="display:none; color: #aaa;">Poster not found.</p>
         </div>
 
         <form action="{% if tipo == 'movie' %}{{ url_for('peliculas') }}{% else %}{{ url_for('series') }}{% endif %}" method="get">
             <input type="hidden" name="reiniciar" value="1">
-            <button type="submit" class="retry-button">{% if tipo == 'movie' %}Elige otra película{% else %}Elige otra serie{% endif %}</button>
+            <button type="submit" class="retry-button">{% if tipo == 'movie' %}Choose another movie{% else %}Choose another series{% endif %}</button>
         </form>
 
     {% else %}
-        <h2>⚠️ No se encontraron coincidencias.</h2>
+        <h2>⚠️ No matches found.</h2>
         <form action="{% if tipo == 'movie' %}{{ url_for('peliculas') }}{% else %}{{ url_for('series') }}{% endif %}" method="get">
             <input type="hidden" name="reiniciar" value="1">
-            <button type="submit" class="retry-button">Intentar de nuevo</button>
+            <button type="submit" class="retry-button">Try Again</button>
         </form>
     {% endif %}
 
     <footer class="tmdb-footer">
         <img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg" 
              alt="TMDB Logo" class="tmdb-logo">
-        <span>Este producto usa la API de TMDB, pero no está respaldado ni certificado por TMDB.</span>
+        <span>This product uses the TMDB API but is not endorsed or certified by TMDB.</span>
     </footer>
 
     <script>
         const TMDB_API_KEY = "{{ tmdb_key }}";
-        const titulo = {{ recomendacion | tojson }};
-        const tipo = "{{ tipo }}";
+        const title = {{ recomendacion | tojson }};
+        const type = "{{ tipo }}";
 
-        if (titulo) {
-            const endpoint = tipo === "tv"
-                ? `https://api.themoviedb.org/3/search/tv?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(titulo)}&language=es-ES`
-                : `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(titulo)}&language=es-ES`;
+        if (title) {
+            const endpoint = type === "tv"
+                ? `https://api.themoviedb.org/3/search/tv?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(title)}&language=en-US`
+                : `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(title)}&language=en-US`;
 
             fetch(endpoint)
                 .then(res => res.json())
