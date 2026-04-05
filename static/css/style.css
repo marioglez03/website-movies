@@ -24,7 +24,7 @@ h1, h2 {
 
 h1 {
     font-size: 2.4rem;
-    margin: 40px 0 10px;
+    margin: 10px 0 0px;
     color: #fff;
     text-shadow:
         0 0 8px rgba(229, 9, 20, 0.9),
@@ -52,7 +52,7 @@ h2 {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 18vh;
+    margin-top: 4px;
     gap: 40px;
     flex-wrap: wrap;
     padding: 0 20px;
@@ -289,5 +289,61 @@ ul li:last-child {
     .menu {
         gap: 24px;
         margin-top: 12vh;
+    }
+}
+/* ── LOGO CENTRAL EN LA PORTADA ── */
+.logo {
+    width: 250px;           /* Ajusta el tamaño del logo */
+    height: auto;
+    margin: 20px 0;         /* Espacio arriba y abajo */
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    animation: fadeInBounce 1.2s ease-out; /* Animación opcional */
+}
+
+@keyframes fadeInBounce {
+    0%   { opacity: 0; transform: translateY(-20px); }
+    60%  { opacity: 1; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+    .logo {
+        width: 200px;
+        margin: 15px 0;
+    }
+}
+
+@media (max-width: 400px) {
+    .logo {
+        width: 200px;
+        margin: 10px 0;
+    }
+}
+/* Logo en la esquina superior izquierda */
+.logo-top-left {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    width: 200px;
+    height: auto;
+    z-index: 1000;
+}
+
+@media (max-width: 600px) {
+    .logo-top-left {
+        width: 200px;
+        top: 10px;
+        left: 10px;
+    }
+}
+
+@media (max-width: 400px) {
+    .logo-top-left {
+        width: 200px;
+        top: 8px;
+        left: 8px;
     }
 }

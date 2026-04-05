@@ -5,7 +5,7 @@
     <title>Result</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <style>
-        /* Retry button adapted to your CSS */
+        /* Botón "retry" adaptado a tu CSS */
         .retry-button {
             margin-top: 25px;
             padding: 14px 28px;
@@ -19,16 +19,11 @@
             transition: all 0.3s ease;
             letter-spacing: 1px;
         }
-
         .retry-button:hover {
             background-color: #e50914;
             color: #ffffff;
-            box-shadow:
-                0 0 20px rgba(229,9,20,0.8),
-                0 0 40px rgba(229,9,20,0.6),
-                0 0 80px rgba(229,9,20,0.4);
+            box-shadow: 0 0 20px rgba(229,9,20,0.8), 0 0 40px rgba(229,9,20,0.6), 0 0 80px rgba(229,9,20,0.4);
         }
-
         h1 {
             font-family: 'Bebas Neue', 'Montserrat', sans-serif;
             color: #fff;
@@ -37,45 +32,32 @@
             font-size: 2.4rem;
             text-transform: uppercase;
             letter-spacing: 3px;
-            text-shadow:
-                0 0 8px rgba(229, 9, 20, 0.9),
-                0 0 24px rgba(229, 9, 20, 0.6),
-                0 0 60px rgba(229, 9, 20, 0.3);
-            animation: pulse-title 3s ease-in-out infinite alternate;
+            text-shadow: 0 0 8px rgba(229, 9, 20, 0.9), 0 0 24px rgba(229, 9, 20, 0.6), 0 0 60px rgba(229, 9, 20, 0.3);
+            animation: pulso-titulo 3s ease-in-out infinite alternate;
         }
-
         .poster-container {
             display: flex;
             justify-content: center;
             margin-top: 20px;
         }
-
         .poster {
             width: min(280px, 80vw);
             border-radius: 10px;
-            box-shadow:
-                0 0 20px rgba(229, 9, 20, 0.8),
-                0 0 60px rgba(229, 9, 20, 0.4),
-                0 0 120px rgba(229, 9, 20, 0.2),
-                0 8px 40px rgba(0,0,0,0.9);
+            box-shadow: 0 0 20px rgba(229, 9, 20, 0.8), 0 0 60px rgba(229, 9, 20, 0.4), 0 0 120px rgba(229, 9, 20, 0.2), 0 8px 40px rgba(0,0,0,0.9);
             transition: transform 0.3s;
-            animation: pulse-poster 2.8s ease-in-out infinite alternate;
+            animation: pulso-poster 2.8s ease-in-out infinite alternate;
         }
-
         .poster:hover {
             transform: scale(1.04);
         }
-
-        @keyframes pulse-title {
+        @keyframes pulso-titulo {
             from { text-shadow: 0 0 8px rgba(229,9,20,0.9), 0 0 24px rgba(229,9,20,0.5); }
-            to   { text-shadow: 0 0 14px rgba(229,9,20,1),  0 0 40px rgba(229,9,20,0.8), 0 0 80px rgba(229,9,20,0.4); }
+            to { text-shadow: 0 0 14px rgba(229,9,20,1), 0 0 40px rgba(229,9,20,0.8), 0 0 80px rgba(229,9,20,0.4); }
         }
-
-        @keyframes pulse-poster {
+        @keyframes pulso-poster {
             from { box-shadow: 0 0 18px rgba(229,9,20,0.7), 0 0 50px rgba(229,9,20,0.35); }
-            to   { box-shadow: 0 0 30px rgba(229,9,20,1),   0 0 80px rgba(229,9,20,0.6), 0 0 140px rgba(229,9,20,0.3); }
+            to { box-shadow: 0 0 30px rgba(229,9,20,1), 0 0 80px rgba(229,9,20,0.6), 0 0 140px rgba(229,9,20,0.3); }
         }
-
         .tmdb-footer {
             margin-top: 40px;
             padding: 16px;
@@ -89,69 +71,98 @@
             border-top: 1px solid #1a1a1a;
             text-align: center;
         }
-
         .tmdb-logo {
             height: 22px;
             vertical-align: middle;
             opacity: 0.7;
         }
+
+        /* Logo en la esquina superior izquierda */
+        .logo-top-left {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            width: 200px;
+            height: auto;
+            z-index: 1000;
+        }
+
+        @media (max-width: 600px) {
+            .logo-top-left {
+                width: 90px;
+                top: 10px;
+                left: 10px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .logo-top-left {
+                width: 70px;
+                top: 8px;
+                left: 8px;
+            }
+        }
+
     </style>
 </head>
 <body class="fondo-negro">
 
-    {% if recomendacion %}
-        <h1>We recommend watching: {{ recomendacion }}</h1>
+    <!-- Logo arriba a la izquierda -->
+    <img src="{{ url_for('static', filename='Logo.jpg') }}" alt="Logo" class="logo-top-left">
 
-        <div class="poster-container">
-            <img id="poster-img" src="" alt="Poster of {{ recomendacion }}" class="poster" style="display:none;">
-            <p id="poster-error" style="display:none; color: #aaa;">Poster not found.</p>
-        </div>
+{% if recomendacion %}
+    <h1>We recommend watching: {{ recomendacion }}</h1>
+    <div class="poster-container">
+        <img id="poster-img" src="" alt="Poster of {{ recomendacion }}" class="poster" style="display:none;">
+        <p id="poster-error" style="display:none; color: #aaa;">Poster not found.</p>
+    </div>
 
-        <form action="{% if tipo == 'movie' %}{{ url_for('peliculas') }}{% else %}{{ url_for('series') }}{% endif %}" method="get">
-            <input type="hidden" name="reiniciar" value="1">
-            <button type="submit" class="retry-button">{% if tipo == 'movie' %}Choose another movie{% else %}Choose another series{% endif %}</button>
-        </form>
+    <form action="{% if tipo == 'movie' %}{{ url_for('peliculas') }}{% else %}{{ url_for('series') }}{% endif %}" method="get">
+        <input type="hidden" name="reiniciar" value="1">
+        <button type="submit" class="retry-button">
+            {% if tipo == 'movie' %}Choose another movie{% else %}Choose another series{% endif %}
+        </button>
+    </form>
 
-    {% else %}
-        <h2>⚠️ No matches found.</h2>
-        <form action="{% if tipo == 'movie' %}{{ url_for('peliculas') }}{% else %}{{ url_for('series') }}{% endif %}" method="get">
-            <input type="hidden" name="reiniciar" value="1">
-            <button type="submit" class="retry-button">Try Again</button>
-        </form>
-    {% endif %}
+{% else %}
+    <h2>⚠️ No matches found.</h2>
+    <form action="{% if tipo == 'movie' %}{{ url_for('peliculas') }}{% else %}{{ url_for('series') }}{% endif %}" method="get">
+        <input type="hidden" name="reiniciar" value="1">
+        <button type="submit" class="retry-button">Try again</button>
+    </form>
+{% endif %}
 
-    <footer class="tmdb-footer">
-        <img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg" 
-             alt="TMDB Logo" class="tmdb-logo">
-        <span>This product uses the TMDB API but is not endorsed or certified by TMDB.</span>
-    </footer>
+<footer class="tmdb-footer">
+    <img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg" alt="TMDB Logo" class="tmdb-logo">
+    <span>This product uses the TMDB API but is not endorsed or certified by TMDB.</span>
+</footer>
 
-    <script>
-        const TMDB_API_KEY = "{{ tmdb_key }}";
-        const title = {{ recomendacion | tojson }};
-        const type = "{{ tipo }}";
+<script>
+    const TMDB_API_KEY = "{{ tmdb_key }}";
+    const titulo = {{ recomendacion | tojson }};
+    const tipo = "{{ tipo }}";
 
-        if (title) {
-            const endpoint = type === "tv"
-                ? `https://api.themoviedb.org/3/search/tv?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(title)}&language=en-US`
-                : `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(title)}&language=en-US`;
+    if (titulo) {
+        const endpoint = tipo === "tv" 
+            ? `https://api.themoviedb.org/3/search/tv?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(titulo)}&language=en-US`
+            : `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(titulo)}&language=en-US`;
 
-            fetch(endpoint)
-                .then(res => res.json())
-                .then(data => {
-                    if (data.results && data.results.length > 0 && data.results[0].poster_path) {
-                        const img = document.getElementById("poster-img");
-                        img.src = `https://image.tmdb.org/t/p/w500${data.results[0].poster_path}`;
-                        img.style.display = "block";
-                    } else {
-                        document.getElementById("poster-error").style.display = "block";
-                    }
-                })
-                .catch(() => {
+        fetch(endpoint)
+            .then(res => res.json())
+            .then(data => {
+                if (data.results && data.results.length > 0 && data.results[0].poster_path) {
+                    const img = document.getElementById("poster-img");
+                    img.src = `https://image.tmdb.org/t/p/w500${data.results[0].poster_path}`;
+                    img.style.display = "block";
+                } else {
                     document.getElementById("poster-error").style.display = "block";
-                });
-        }
-    </script>
+                }
+            })
+            .catch(() => {
+                document.getElementById("poster-error").style.display = "block";
+            });
+    }
+</script>
 
 </body>
 </html>

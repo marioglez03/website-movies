@@ -6,36 +6,37 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body class="fondo-negro">
+
+    <!-- Logo arriba a la izquierda -->
+    <img src="{{ url_for('static', filename='Logo.jpg') }}" alt="Logo" class="logo-top-left">
+
     <h1>Round {{ ronda }} of 5: Choose a Movie</h1>
 
-    <form method="POST" id="choice-form">
-        <div class="options">
-
-            <button type="submit" name="movie" value="{{ pelicula1 }}" class="movie-card">
+    <form method="POST" id="form-eleccion">
+        <div class="opciones">
+            <button type="submit" name="pelicula" value="{{ pelicula1 }}" class="card-pelicula">
                 <img id="poster1" src="" alt="{{ pelicula1 }}" class="poster-card">
-                <span class="card-title">{{ pelicula1 }}</span>
+                <span class="titulo-card">{{ pelicula1 }}</span>
             </button>
 
-            <button type="submit" name="movie" value="{{ pelicula2 }}" class="movie-card">
+            <button type="submit" name="pelicula" value="{{ pelicula2 }}" class="card-pelicula">
                 <img id="poster2" src="" alt="{{ pelicula2 }}" class="poster-card">
-                <span class="card-title">{{ pelicula2 }}</span>
+                <span class="titulo-card">{{ pelicula2 }}</span>
             </button>
-
         </div>
     </form>
 
     <script>
         const TMDB_API_KEY = "{{ tmdb_key }}";
-        const movie1 = {{ pelicula1 | tojson }};
-        const movie2 = {{ pelicula2 | tojson }};
-
+        const pelicula1 = {{ pelicula1 | tojson }};
+        const pelicula2 = {{ pelicula2 | tojson }};
         const PLACEHOLDER = "https://via.placeholder.com/300x450/1a1a1a/666666?text=No+Poster";
 
-        async function loadPoster(title, imgId) {
+        async function cargarPoster(titulo, imgId) {
             const img = document.getElementById(imgId);
             try {
                 const res = await fetch(
-                    `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(title)}&language=en-US`
+                    `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(titulo)}&language=en-US`
                 );
                 const data = await res.json();
                 if (data.results && data.results.length > 0 && data.results[0].poster_path) {
@@ -48,8 +49,8 @@
             }
         }
 
-        loadPoster(movie1, "poster1");
-        loadPoster(movie2, "poster2");
+        cargarPoster(pelicula1, "poster1");
+        cargarPoster(pelicula2, "poster2");
     </script>
 </body>
 </html>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>What to Watch</title> <!-- Title in the browser tab -->
+    <title>What to Watch</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;600;700&display=swap');
@@ -33,14 +33,15 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 40px 20px;
+            padding: 20px 20px;
             flex: 1;
+            gap: 0;
         }
 
         h1 {
             font-family: 'Bebas Neue', sans-serif;
             font-size: 3rem;
-            margin-bottom: 5px;
+            margin-bottom: 0px;
             text-transform: uppercase;
             letter-spacing: 2px;
             color: #e50914;
@@ -53,11 +54,19 @@
             to   { text-shadow: 0 0 20px rgba(229,9,20,1), 0 0 40px rgba(229,9,20,0.6);}
         }
 
+        /* Estilo del logo */
+        .logo {
+            width: 250px;
+            height: auto;
+            margin: 2px auto;
+            display: block;
+        }
+
         p.tagline {
             font-size: 1.2rem;
             color: #ccc;
             max-width: 500px;
-            margin: 10px 0 30px;
+            margin: 2px 0 20px;
             opacity: 0;
             animation: fadeInText 2s ease forwards;
         }
@@ -139,12 +148,19 @@
             p.tagline {
                 font-size: 1rem;
             }
+            .logo {
+                width: 120px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>What to Watch</h1>
+
+        <!-- Logo insertado -->
+        <img src="{{ url_for('static', filename='Logo.jpg') }}" alt="Logo" class="logo">
+
         <p class="tagline">Discover your next favorite series or movie in seconds</p>
 
         <div class="menu">
